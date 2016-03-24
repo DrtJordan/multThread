@@ -1,7 +1,7 @@
 package cn.itcast.heima2;
 /**
  * 
- * Description: 传统的线程安全问题
+ * Description: 传统的线程安全问题		银行转账
  * Created on:  2016年3月24日 上午12:18:59 
  * @author bbaiggey
  */
