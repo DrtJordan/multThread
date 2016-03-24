@@ -65,7 +65,6 @@ public class TraditionalThreadSynchronized {
 		/**
 		 * 
 		 * Description: ²»°²È«
-		 * @author bai_ge@suixingpay.com
 		 * @param  @param name
 		 * @return void
 		 * @throws
