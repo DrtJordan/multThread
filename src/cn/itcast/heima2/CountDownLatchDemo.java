@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.CountDownLatch;
 /**
+ * 一个任务交给多个线程执行，只有所有线程全部执行结束之后整个任务才算结束
  * 
  * Description: 一个同步辅助类，在完成一组正在其他线程中执行的操作之前，它允许一个或多个线程一直等待。
  * 构造方法参数指定了计数的次数countDown方法，当前线程调用此方法，则计数减一	awaint方法，调用此方法会一直阻塞当前线程，直到计时器的值为0
@@ -11,13 +12,14 @@ import java.util.concurrent.CountDownLatch;
  * @author bbaiggey
  */
 public class CountDownLatchDemo {
+	
 	final static SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     public static void main(String[] args) throws InterruptedException {
     	CountDownLatch latch=new CountDownLatch(2);//两个工人的协作
     	Worker worker1=new Worker("zhang san", 5000, latch);
     	Worker worker2=new Worker("li si", 8000, latch);
-    	worker1.start();//
-    	worker2.start();//
+    	worker1.start();//开启线程1
+    	worker2.start();//开启线程2
     	latch.await();//等待所有工人完成工作
         System.out.println("all work done at "+sdf.format(new Date()));
 	}
