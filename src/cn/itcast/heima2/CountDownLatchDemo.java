@@ -5,7 +5,6 @@ import java.util.Date;
 import java.util.concurrent.CountDownLatch;
 /**
  * 一个任务交给多个线程执行，只有所有线程全部执行结束之后整个任务才算结束
- * 
  * Description: 一个同步辅助类，在完成一组正在其他线程中执行的操作之前，它允许一个或多个线程一直等待。
  * 构造方法参数指定了计数的次数countDown方法，当前线程调用此方法，则计数减一	awaint方法，调用此方法会一直阻塞当前线程，直到计时器的值为0
  * Created on:  2016年3月30日 下午5:14:27 
