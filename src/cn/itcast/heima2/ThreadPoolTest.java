@@ -3,7 +3,12 @@ package cn.itcast.heima2;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
-
+/**
+ * 
+ * Description: 线程池
+ * Created on:  2016年3月31日 下午5:23:20 
+ * @author bbaiggey
+ */
 public class ThreadPoolTest {
 
 	/**
