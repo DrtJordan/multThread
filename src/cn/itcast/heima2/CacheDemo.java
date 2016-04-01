@@ -32,8 +32,9 @@ public class CacheDemo {
 				rwl.readLock().unlock();
 				rwl.writeLock().lock();
 				try{
-					if(value==null){
-						value = "aaaa";//实际失去queryDB();
+					if(value==null){	//判断第一个线程是否拿到了数据 ，如果拿到了其他线程就释放写锁，获得并发读锁
+						value = "aaaa";//实际是去queryDB();
+//						查询结束之后加入缓存中
 					}
 				}finally{
 					rwl.writeLock().unlock();
