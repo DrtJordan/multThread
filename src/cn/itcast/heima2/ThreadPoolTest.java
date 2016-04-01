@@ -5,7 +5,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 /**
  * 
- * Description: 线程池
+ * Description: 线程池[固定大小的、带有缓存的、单一的]
  * Created on:  2016年3月31日 下午5:23:20 
  * @author bbaiggey
  */
@@ -19,7 +19,7 @@ public class ThreadPoolTest {
 //		ExecutorService threadPool = Executors.newFixedThreadPool(3);		//线程池 数量是3
 //		复用可用的线程,当超过60秒没有被使用就会被移除,池子中的线程不够时,会创建新的线程
 //		ExecutorService threadPool = Executors.newCachedThreadPool();	//带缓存的线程池
-		ExecutorService threadPool = Executors.newSingleThreadExecutor();	//单线程池--->线程死亡会自动重启
+		ExecutorService threadPool = Executors.newSingleThreadExecutor();	//单线程池--->线程死亡会自动启动一个新线程
 		for(int i=1;i<=10;i++){
 			final int task = i;
 			threadPool.execute(new Runnable(){
@@ -42,7 +42,7 @@ public class ThreadPoolTest {
 //		threadPool.shutdownNow();//干完给定线程池的第一波就结束
 		
 //		创建一个指定数量的调度线程池				任务,第一次执行的间隔时间,多久重复一次，时间单位
-		Executors.newScheduledThreadPool(3).scheduleAtFixedRate(
+		Executors.newScheduledThreadPool(3).scheduleAtFixedRate(//调度固定的频率
 				new Runnable(){
 					@Override
 				public void run() {
