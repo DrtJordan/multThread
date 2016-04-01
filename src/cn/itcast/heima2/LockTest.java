@@ -5,7 +5,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * 
- * Description: Lock		ReentrantLock lock unlock
+ * Description: Lock		ReentrantLock lock unlock  记得逻辑代码用try catch 包围最后在finally中释放锁资源
  * Created on:  2016年3月23日 下午11:55:02 
  * @author bbaiggey
  */
@@ -63,7 +63,7 @@ public class LockTest {
 		public void output(String name){
 			int len = name.length();
 			lock.lock();
-			try{
+			try{//注意异常的处理，不然锁永远都无法释放 会造成死锁
 				for(int i=0;i<len;i++){
 					System.out.print(name.charAt(i));
 				}
