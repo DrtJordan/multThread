@@ -12,8 +12,9 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
 /**
- * 
- * Description: CallableAndFuture		---->	两种获取线程执行之后返回结果的方式  其实都是获取Future 调用get()方法
+ * 	Future获得结果类型和Callable返回的结果类型必须一致，这是通过泛型来实现的。 Callable要采用ExecutorService的submit方法提交，返回future对象可以取消任务
+ * CompletionService用于提交一组Callable任务，其take方法返回已完成的一个Callable任务对应的Future对象	同事提交任务 哪个县执行完就先拿到结果
+ * Description: CallableAndFuture		---->	两种获取线程执行之后返回结果的方式  其实都是获取Future 调用get()方法  //有返回值使用submit 不需要返回值使用execute
  * ExecutorService		------->
  * ExecutorCompletionService		----->线程
  * Created on:  2016年3月25日 下午9:15:47 
@@ -28,7 +29,7 @@ public class CallableAndFuture {
 	public static void main(String[] args) {
 		ExecutorService threadPool =  Executors.newSingleThreadExecutor();
 		Future<String> future =
-			threadPool.submit(
+			threadPool.submit(	//有返回值使用submit 不需要返回值使用execute
 				new Callable<String>() {
 					public String call() throws Exception {
 						Thread.sleep(3000);
@@ -56,6 +57,7 @@ public class CallableAndFuture {
 	     *
 	     * @param executor the executor to use
 	     * @throws NullPointerException if executor is {@code null}*/
+//		同事提交任务 哪个县执行完就先拿到结果
 		CompletionService<Integer> completionService = new ExecutorCompletionService<Integer>(threadPool2);
 		for(int i=1;i<=10;i++){
 			final int seq = i;
