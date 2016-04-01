@@ -4,7 +4,12 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
-
+/**
+ * 
+ * Description: 三个线程之间通讯使用 Condition 三个人做任务，1做完通知2 2做完通知3 3做完通知1 这样往复下去
+ * Created on:  2016年4月1日 下午3:59:42 
+ * @author bbaiggey
+ */
 public class ThreeConditionCommunication {
 
 	/**
