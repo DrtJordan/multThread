@@ -1,9 +1,12 @@
 package com.bg.nio;
 
+import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
+import java.nio.channels.DatagramChannel;
 import java.nio.channels.FileChannel;
+import java.nio.channels.Pipe;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 /**
@@ -120,6 +123,75 @@ public class JavaNio2Channel {
 
 		
 		
+	}
+	
+
+	/**
+	 * 
+	 * Description: TODO
+	 * @author bbaiggey
+	 * @param  @throws Exception
+	 * @return void
+	 * @throws
+	 */
+	public void DatagramChannelWrite() throws Exception{
+		
+	/*	DatagramChannel channel = DatagramChannel.open();
+		channel.socket().bind(new InetSocketAddress(9999));
+		ByteBuffer buf = ByteBuffer.allocate(48);
+		buf.clear();
+		channel.receive(buf);*/
+		
+		DatagramChannel channel = DatagramChannel.open();
+		channel.socket().bind(new InetSocketAddress(9999));
+		String newData = "New String to write to file..." + System.currentTimeMillis();
+		ByteBuffer buf = ByteBuffer.allocate(48);
+		buf.clear();
+		buf.put(newData.getBytes());
+		buf.flip();
+		int bytesSent = channel.send(buf, new InetSocketAddress("jenkov.com", 80));
+
+//		连接到特定的地址
+//		可以将DatagramChannel“连接”到网络中的特定地址的。由于UDP是无连接的，连接到特定地址并不会像TCP通道那样创建一个真正的连接。而是锁住DatagramChannel ，让其只能从特定地址收发数据。
+		channel.connect(new InetSocketAddress("jenkov.com", 80));
+		int bytesRead = channel.read(buf);
+		int bytesWritten = channel.write(buf);
+
+		
+
+		
+	}
+	/**
+	 * 
+	 * Description: java NIO 管道是2个线程之间的单向数据连接。Pipe有一个source通道和一个sink通道
+	 * @author bbaiggey
+	 * @param  @throws Exception
+	 * @return void
+	 * @throws
+	 */
+	public void Pipe() throws Exception{
+		Pipe pipe = Pipe.open();
+//		要向管道写数据，需要访问sink通道。像这样：
+		Pipe.SinkChannel sinkChannel = pipe.sink();
+		
+		
+		String newData = "New String to write to file..." + System.currentTimeMillis();
+		ByteBuffer buf = ByteBuffer.allocate(48);
+		buf.clear();
+		buf.put(newData.getBytes());
+		buf.flip();
+		while(buf.hasRemaining()) {
+//			通过调用SinkChannel的write()方法，将数据写入SinkChannel,像这样：
+		    sinkChannel.write(buf);
+		}
+
+		/*从管道读取数据
+		从读取管道的数据，需要访问source通道，像这样：*/
+		Pipe.SourceChannel sourceChannel = pipe.source();
+//		调用source通道的read()方法来读取数据，像这样：
+		ByteBuffer buf1 = ByteBuffer.allocate(48);
+		int bytesRead = sourceChannel.read(buf1);
+//		read()方法返回的int值会告诉我们多少字节被读进了缓冲区。
 	}
 	
 	
