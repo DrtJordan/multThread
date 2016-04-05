@@ -1,6 +1,14 @@
 package com.bg.nio;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.RandomAccessFile;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
@@ -11,34 +19,41 @@ import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 /**
  * 
- * Description: java NIO模型
+ * Description: java NIO模型	标准IO读写
  * Created on:  2016年4月5日 上午11:38:40 
  * @author bbaiggey
  */
 public class JavaNio2Channel {
 	public static void main(String[] args) throws Exception {
-//		在使用FileChannel之前，必须先打开它。但是，我们无法直接打开一个FileChannel，需要通过使用一个InputStream、OutputStream或RandomAccessFile来获取一个FileChannel实例。下面是通过RandomAccessFile打开
-		RandomAccessFile aFile = new RandomAccessFile("D://test.scala", "rw");
-		FileChannel inChannel = aFile.getChannel();//获取一个管道
-		 
-		ByteBuffer buf = ByteBuffer.allocate(48);
-//		 调用多个read()方法之一从FileChannel中读取数据
-//		首先，分配一个Buffer。从FileChannel中读取的数据将被读到Buffer中。
-//		然后，调用FileChannel.read()方法。该方法将数据从FileChannel读取到Buffer中。read()方法返回的int值表示了有多少字节被读到了Buffer中。如果返回-1，表示到了文件末尾。
-		int bytesRead = inChannel.read(buf);
-		
-		while (bytesRead != -1) {
-		System.out.println("Read " + bytesRead);
-//		注意 buf.flip() 的调用，首先读取数据到Buffer，然后反转Buffer,接着再从Buffer中读取数据
-		buf.flip();
-		while(buf.hasRemaining()){
-		System.out.print((char) buf.get());
-		}
-		buf.clear();
-		bytesRead = inChannel.read(buf);
-		}
-		aFile.close();
+//		Nio();
+		JavaNio2Channel javaNio2Channel = new JavaNio2Channel();
+//		String str = javaNio2Channel.BufferedReaderDemo("D:\\j.txt");
+//		String str = javaNio2Channel.FileInputStreamDemo("D:\\j.txt");
+		javaNio2Channel.readInputStream();
 
+	}
+	private static void Nio() throws FileNotFoundException, IOException {
+		//		在使用FileChannel之前，必须先打开它。但是，我们无法直接打开一个FileChannel，需要通过使用一个InputStream、OutputStream或RandomAccessFile来获取一个FileChannel实例。下面是通过RandomAccessFile打开
+				RandomAccessFile aFile = new RandomAccessFile("D://test.scala", "rw");
+				FileChannel inChannel = aFile.getChannel();//获取一个管道
+				 
+				ByteBuffer buf = ByteBuffer.allocate(48);
+		//		 调用多个read()方法之一从FileChannel中读取数据
+		//		首先，分配一个Buffer。从FileChannel中读取的数据将被读到Buffer中。
+		//		然后，调用FileChannel.read()方法。该方法将数据从FileChannel读取到Buffer中。read()方法返回的int值表示了有多少字节被读到了Buffer中。如果返回-1，表示到了文件末尾。
+				int bytesRead = inChannel.read(buf);
+				
+				while (bytesRead != -1) {
+				System.out.println("Read " + bytesRead);
+		//		注意 buf.flip() 的调用，首先读取数据到Buffer，然后反转Buffer,接着再从Buffer中读取数据
+				buf.flip();
+				while(buf.hasRemaining()){
+				System.out.print((char) buf.get());
+				}
+				buf.clear();
+				bytesRead = inChannel.read(buf);
+				}
+				aFile.close();
 	}
 	/**
 	 * 
@@ -194,6 +209,70 @@ public class JavaNio2Channel {
 //		read()方法返回的int值会告诉我们多少字节被读进了缓冲区。
 	}
 	
+/**
+ * java 标准IO的流读写
+ * @throws Exception 
+ */
+	public void  readInputStream() throws Exception{
+		
+		InputStream input = new FileInputStream("D:\\j.txt");
+		/**
+		 * 组合流
+		 */
+//		InputStream input = new BufferedInputStream(new FileInputStream("c:\\data\\input-file.txt"));
+		byte[] buf = new byte[1024];
+		 StringBuffer sb=new StringBuffer();
+		int data = input.read(buf); //返回值是读取的长度
+		while(data != -1){//读取到末尾返回的是-1
+		     
+		        sb.append(new String(buf));  
+		        buf=new byte[1024];//重新生成，避免和上次读取的数据重复
+		        data = input.read(buf);
+		        
+		}
+		System.out.println(sb.toString());
+
+	}
+	
+	   public String FileInputStreamDemo(String path) throws IOException{
+	         File file=new File(path);
+	         if(!file.exists()||file.isDirectory())
+	             throw new FileNotFoundException();
+	         FileInputStream fis=new FileInputStream(file);
+	         byte[] buf = new byte[1024];
+	         StringBuffer sb=new StringBuffer();
+	         while((fis.read(buf))!=-1){
+	             sb.append(new String(buf));    
+	             buf=new byte[1024];//重新生成，避免和上次读取的数据重复
+	         }
+	         return sb.toString();
+	     }
+	
+	public String BufferedReaderDemo(String path) throws IOException{
+		
+        File file=new File(path);
+        if(!file.exists()||file.isDirectory())
+            throw new FileNotFoundException();
+        BufferedReader br=new BufferedReader(new FileReader(file));
+        String temp=null;
+        StringBuffer sb=new StringBuffer();
+        temp=br.readLine();
+        while(temp!=null){
+            sb.append(temp+"\n");
+            temp=br.readLine();
+        }
+        return sb.toString();
+    }
+	
+	public void  writeOutputStream() throws Exception{
+		
+		OutputStream output = new FileOutputStream("c:\\data\\input-file.txt");
+		output.write("Hello World".getBytes());
+		output.close();
+
+		
+		
+	}
 	
 
 }
