@@ -2,8 +2,10 @@ package com.bg.nio;
 
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
+import java.nio.channels.SocketChannel;
 /**
  * 
  * Description: java NIO模型
@@ -39,7 +41,8 @@ public class JavaNio {
 	 * 
 	 *注意FileChannel.write()是在while循环中调用的。因为无法保证write()方法一次能向FileChannel写入多少字节，因此需要重复调用write()方法，直到Buffer中已经没有尚未写入通道的字节。
 	 */
-	public void w() throws Exception{
+	public void FileChannelWrite() throws Exception{
+//		FileChannel只有阻塞模式
 		RandomAccessFile aFile = new RandomAccessFile("D://test.scala", "rw");
 		FileChannel channel = aFile.getChannel();//获取一个管道
 		String newData = "New String to write to file..." + System.currentTimeMillis();
@@ -52,6 +55,36 @@ public class JavaNio {
 		}
 		channel.close();
 
+	}
+	public void SocketChannelWrite() throws Exception{
+//		阻塞模式SocketChannel
+		/*SocketChannel socketChannel = SocketChannel.open();
+		socketChannel.connect(new InetSocketAddress("http://jenkov.com", 80));
+
+		String newData = "New String to write to file..." + System.currentTimeMillis();
+		ByteBuffer buf = ByteBuffer.allocate(48);
+		buf.clear();
+		buf.put(newData.getBytes());
+		buf.flip();
+		while(buf.hasRemaining()) {
+			socketChannel.write(buf);
+		}
+		socketChannel.close();*/
+		SocketChannel socketChannel = SocketChannel.open();
+		socketChannel.configureBlocking(false);
+		socketChannel.connect(new InetSocketAddress("http://jenkov.com", 80));
+		
+		String newData = "New String to write to file..." + System.currentTimeMillis();
+		ByteBuffer buf = ByteBuffer.allocate(48);
+		buf.clear();
+		buf.put(newData.getBytes());
+		buf.flip();
+		while(! socketChannel.finishConnect() ){
+			    //wait, or do something else...
+			}
+
+		socketChannel.close();
+		
 	}
 	
 
