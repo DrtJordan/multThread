@@ -1,10 +1,10 @@
 package com.bg.nio;
 
-import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
+import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 /**
  * 
@@ -12,7 +12,7 @@ import java.nio.channels.SocketChannel;
  * Created on:  2016年4月5日 上午11:38:40 
  * @author bbaiggey
  */
-public class JavaNio {
+public class JavaNio2Channel {
 	public static void main(String[] args) throws Exception {
 //		在使用FileChannel之前，必须先打开它。但是，我们无法直接打开一个FileChannel，需要通过使用一个InputStream、OutputStream或RandomAccessFile来获取一个FileChannel实例。下面是通过RandomAccessFile打开
 		RandomAccessFile aFile = new RandomAccessFile("D://test.scala", "rw");
@@ -56,6 +56,8 @@ public class JavaNio {
 		channel.close();
 
 	}
+	
+	
 	public void SocketChannelWrite() throws Exception{
 //		阻塞模式SocketChannel
 		/*SocketChannel socketChannel = SocketChannel.open();
@@ -86,6 +88,40 @@ public class JavaNio {
 		socketChannel.close();
 		
 	}
+	/**
+	 * 
+	 * java NIO中的 ServerSocketChannel 是一个可以监听新进来的TCP连接的通道, 就像标准IO中的ServerSocket一样。
+	 */
+	public void ServerSocketChannelWrite() throws Exception{
+//		阻塞模式
+//		通过调用 ServerSocketChannel.open() 方法来打开ServerSocketChannel.如：
+		/*ServerSocketChannel serverSocketChannel = ServerSocketChannel.open();
+		serverSocketChannel.socket().bind(new InetSocketAddress(9999));
+//		通过 ServerSocketChannel.accept() 方法监听新进来的连接。当 accept()方法返回的时候,它返回一个包含新进来的连接的 SocketChannel。因此, accept()方法会一直阻塞到有新连接到达。
+//		使用while的目的是  通常不会只监听一个连接 所以会一直循环下去
+		while(true){
+		    SocketChannel socketChannel =
+		            serverSocketChannel.accept();
+
+		    //do something with socketChannel...
+		}*/
+//		非阻塞模式
+		ServerSocketChannel serverSocketChannel = ServerSocketChannel.open();
+		serverSocketChannel.socket().bind(new InetSocketAddress(9999));
+//		设置成非阻塞模式
+		serverSocketChannel.configureBlocking(false);
+		while(true){
+		    SocketChannel socketChannel =
+		            serverSocketChannel.accept();
+		    if(socketChannel != null){
+		        //do something with socketChannel...
+		    }
+		}
+
+		
+		
+	}
+	
 	
 
 }
