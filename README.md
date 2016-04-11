@@ -18,4 +18,4 @@ java5线程并发库
 	10、Exchanger--->两个线程之间进行数据交换
 	11、final BlockingQueue queue = new ArrayBlockingQueue(3);--->阻塞队列
 	12、	Collections.synchronizedMap(m)-->同步集合
-	14、Disruptor--->生产消费模型
+	13、Disruptor--->生产消费模型
