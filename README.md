@@ -19,3 +19,5 @@ java5线程并发库
 	11、final BlockingQueue queue = new ArrayBlockingQueue(3);--->阻塞队列
 	12、	Collections.synchronizedMap(m)-->同步集合
 	13、Disruptor--->生产消费模型
+***********************************************************************************************
+Socket编程Nio、neety、mima
